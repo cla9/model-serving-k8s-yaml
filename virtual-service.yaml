@@ -1,0 +1,27 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: covid-app-virtual-service
+spec:
+  hosts:
+  - "*"
+  gateways:
+  - covid-app-gateway
+  http:
+  - match:
+    - uri:
+        prefix: /covid19/api
+    route:
+    - destination:
+        host: covid-19-backend
+        port:
+          number: 80
+  - match:
+    - uri:
+        prefix: /       
+    timeout: 2s    
+    route:    
+    - destination:
+        host: covid-19-frontend
+        port:
+          number: 80       

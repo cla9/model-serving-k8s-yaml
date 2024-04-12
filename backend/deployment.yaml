@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: covid-19-backend  
+  labels:
+    app: covid-19-backend
+spec:
+  selector:
+    matchLabels:
+      app: covid-19-backend
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: covid-19-backend
+    spec:
+      containers:
+      - name: covid-19-backend
+        image: cla9/covid-backend:v11
+        env:
+        - name: INFERENCE_HOST
+          value: "covid-test.code30.123-41-0-234.sslip.io"
+        - name: INFERENCE_URL
+          value: "http://123.41.0.234/v1/models/covid-test:predict"
+        ports:
+        - containerPort: 5000
+        livenessProbe:
+          httpGet:
+            path: /covid19/api/v1/predict/healthcheck
+            port: 5000
+          initialDelaySeconds: 20  
+          failureThreshold: 5
+          periodSeconds: 10        
+        readinessProbe:
+          httpGet:
+            path: /covid19/api/v1/predict/healthcheck
+            port: 5000
+          initialDelaySeconds: 20  
+          failureThreshold: 5
+          periodSeconds: 10             
+        startupProbe:
+          httpGet:
+            path: /covid19/api/v1/predict/healthcheck
+            port: 5000
+          failureThreshold: 5
+          periodSeconds: 10                
+        resources:
+          requests:
+            cpu: 500m
+            memory: 1024Mi
+          limits:
+            cpu: 800m
+            memory: 2048Mi   

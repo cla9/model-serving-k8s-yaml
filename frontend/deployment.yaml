@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: covid-19-frontend
+  labels:
+    app: covid-19-frontend
+spec:
+  selector:
+    matchLabels:
+      app: covid-19-frontend
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: covid-19-frontend
+    spec:
+      containers:
+      - name: covid-19-frontend
+        image: cla9/covid-frontend:v3
+        env:
+        - name: BACKEND_URL
+          value: "http://covid-19-backend.default.svc.cluster.local/covid19/api/v1/predict/"
+        ports:
+        - containerPort: 5000
+        resources:
+          requests:
+            cpu: 100m
+            memory: 800Mi
+          limits:
+            cpu: 200m
+            memory: 1024Mi   

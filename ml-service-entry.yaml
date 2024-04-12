@@ -1,0 +1,15 @@
+apiVersion: networking.istio.io/v1beta1
+kind: ServiceEntry
+metadata:
+  name: ml-model-serving-svc
+spec:
+  hosts:
+    - covid-test.code30.123-41-0-234.sslip.io
+  addresses:
+    - 123.41.0.234/24
+  location: MESH_EXTERNAL
+  resolution: DNS
+  ports:
+    - number: 80
+      name: http
+      protocol: http

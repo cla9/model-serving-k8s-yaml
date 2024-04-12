@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: covid-19-backend
+  labels:
+    app: covid-19-backend
+spec:
+  ports:
+  - port: 80
+    protocol: TCP
+    targetPort: 5000
+    nodePort: 30001
+  type: NodePort  
+  selector:
+    app: covid-19-backend
